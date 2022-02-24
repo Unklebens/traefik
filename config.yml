@@ -1,0 +1,47 @@
+http:
+ #region routers 
+  routers:
+    nas:
+      entryPoints:
+        - "https"
+      rule: "Host(`nas.local.example.com`)"
+      middlewares:
+        - default-headers
+      tls: {}
+      service: nas
+#endregion
+
+#region services
+  services:
+    nas:
+      loadBalancer:
+        servers:
+          - url: "http://192.168.35.20:8888"
+        passHostHeader: true
+
+    default-headers:
+      headers:
+        frameDeny: true
+        sslRedirect: true
+        browserXssFilter: true
+        contentTypeNosniff: true
+        forceSTSHeader: true
+        stsIncludeSubdomains: true
+        stsPreload: true
+        stsSeconds: 15552000
+        customFrameOptionsValue: SAMEORIGIN
+        customRequestHeaders:
+          X-Forwarded-Proto: https
+
+    default-whitelist:
+      ipWhiteList:
+        sourceRange:
+        - "10.0.0.0/8"
+        - "192.168.0.0/16"
+        - "172.16.0.0/12"
+
+    secured:
+      chain:
+        middlewares:
+        - default-whitelist
+        - default-headers
