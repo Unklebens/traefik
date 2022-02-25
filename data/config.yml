@@ -37,5 +37,4 @@ http:
     secured:
       chain:
         middlewares:
-        - default-whitelist
         - default-headers
