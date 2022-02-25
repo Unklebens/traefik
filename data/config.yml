@@ -4,7 +4,7 @@ http:
     nas:
       entryPoints:
         - "https"
-      rule: "Host(`nas.local.example.com`)"
+      rule: "Host(`nas.fkds.fr`)"
       middlewares:
         - default-headers
       tls: {}
